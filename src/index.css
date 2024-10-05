@@ -2,16 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    #root {
+        @apply size-full
+    }
+
+    a, button {
+        @apply relative pointer-events-auto z-1
+    }
+}
+
 @layer components {
-    .profile {
+
+    .profile, .profile * {
         @apply rounded-full
     }
 
-    .button-outercontent {
-        @apply ease-linear duration-200 active:bg-tblack/20 w-fit p-2 m-auto rounded-full
+    .button-effect {
+        @apply p-2 rounded-full duration-200
+    }
+    
+    .button:active {
+        .button-effect {
+            @apply bg-tblack/10
+        }
     }
 
-    .button-content {
-        @apply size-6 m-auto fill-tblack
+    .button.blue:active {
+        .button-effect {
+            @apply bg-tblue/10
+        }
+        
+        svg {
+            @apply fill-tblue
+        }
+
+        span {
+            @apply text-tblue
+        }
     }
+
+    .button.red:active {
+        .button-effect {
+            @apply bg-tred/10
+        }
+        
+        svg {
+            @apply fill-tred
+        }
+
+        span {
+            @apply text-tred
+        }
+    }
+
 }
