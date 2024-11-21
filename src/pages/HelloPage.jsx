@@ -1,11 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 
 // context api로 로그인 정보
 // 임시 데이터
-const loggedUser = null;
-// const loggedUser = { id: 'a' };
+// const loggedUser = null;
+const loggedUser = { id: 'a' };
 
 function Hello() {
     const isLoggedIn = loggedUser ? true : false;
@@ -13,7 +13,7 @@ function Hello() {
 
     useEffect(() => {
         console.log(`${isLoggedIn}, ${isLoggedIn ? loggedUser.id : "null"}`);
-        if (isLoggedIn == true) {
+        if (isLoggedIn === true) {
             navigate('/home');
         }
     }, [isLoggedIn, navigate]);
@@ -38,17 +38,16 @@ function Hello() {
                                     </g>
                                 </svg>
                                 <div className="flex flex-wrap max-md:text-[48px] text-[56px] font-bold leading-snug">
-                                    <span className="text-balance">Twitout</span>&nbsp;
-                                    <span className="text-balance">시작하기</span>
+                                    <span className="text-balance">Twitout</span>&nbsp;<span className="text-balance">시작하기</span>
                                 </div>
                                 <div className="max-w-xs">
                                     <div className="w-full mb-5 text-2xl font-bold">
                                         <span>지금 가입하세요.</span>
                                     </div>
+                                    {/*
+                                    // 구글 계정으로 로그인 구현 시 사용
                                     <div data-testid="google_sign_in_container" className="">
                                         <div className="w-full h-10 bg-tlightgray">
-                                            <iframe src="https://accounts.google.com/gsi/button?theme=outline&size=large&shape=circle&logo_alignment=center&text=signup_with&width=266&client_id=49625052041-kgt0hghf445lmcmhijv46b715m2mpbct.apps.googleusercontent.com&iframe_id=gsi_960735_395285&as=a4YYOo0tz3X%2BvtsMdTawxg&hl=ko" allow="identity-credentials-get" id="gsi_960735_395285" title="Google 계정으로 로그인 버튼">
-                                            </iframe>
                                         </div>
                                     </div>
                                     <div className="w-full my-1">
@@ -56,7 +55,8 @@ function Hello() {
                                             <span className="mx-2">또는</span>
                                         </div>
                                     </div>
-                                    <Link to="/signup" role="link" data-testid="signupButton" className="flex">
+                                    */}
+                                    <Link to="/signup" data-testid="signupButton" className="flex">
                                         <div className="flex items-center justify-center w-full h-10 mb-2 rounded-full bg-tblue">
                                             <span className="font-bold text-white">
                                                 <span>계정 만들기</span>
@@ -73,7 +73,8 @@ function Hello() {
                                     <div className="mb-5">
                                         <span className="font-bold">이미 Twitout에 가입하셨나요?</span>
                                     </div>
-                                    <Link to="/login" role="link" data-testid="loginButton" className="flex">
+                                    <Link to="/login"
+                                        data-testid="loginButton" className="flex">
                                         <div className="flex items-center justify-center w-full h-10 mb-2 border rounded-full border-tblue">
                                             <span className="font-bold text-tblue">
                                                 <span>로그인</span>
@@ -84,25 +85,24 @@ function Hello() {
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div>
-                    <nav aria-label="바닥글" role="navigation">
-                        <a href="https://about.x.com" dir="ltr" rel="noopener noreferrer nofollow" target="_blank" role="link">
-                            <span>소개</span>
-                        </a>
-                        <a href="https://developer.x.com" dir="ltr" rel="noopener noreferrer nofollow" target="_blank" role="link">
-                            <span>개발자</span>
-                        </a>
-                        <a href="/settings" dir="ltr" role="link">
-                            <span>설정</span>
-                        </a>
-                        {/* <div dir="ltr">
-                                            <span>© 2024 김지민, 김다인</span>
-                                        </div> */}
+                <div className="flex justify-center min-w-[360px]">
+                    <nav aria-label="바닥글" className="px-3 py-4">
+                        <div className="flex flex-wrap justify-center gap-4">
+                            <Link to="/about" target="_blank">
+                                <span>소개</span>
+                            </Link>
+                            {/*<Link to="" target="_blank" >
+                                <span>개발자</span>
+                            </Link>*/}
+                            <Link to="/settings">
+                                <span>설정</span>
+                            </Link>
+                        </div>
+                        {/* <div>
+                            <span>© 2024 </span>
+                        </div> */}
                     </nav>
-                </div>
-                <div data-testid="google_sign_in_container">
                 </div>
             </div>
         </>

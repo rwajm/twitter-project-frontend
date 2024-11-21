@@ -17,7 +17,7 @@ function App() {
         <Route path='home' element={<HomePage />} />
         <Route path='compose/post' element={<ComposePage />} />
         <Route path='/:userId' element={<UserPage />} />
-        <Route path='/:userId/status/:tweetId' element={<TweetPage />} />
+        <Route path='/:userId/tweets/:tweetId' element={<TweetPage />} />
       </Routes>
     </BrowserRouter>
   );

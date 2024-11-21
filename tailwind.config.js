@@ -12,16 +12,17 @@ module.exports = {
         'tgray': '#CFD9DE',
         'tlightgray': '#EFF3F4',
         'tblue': '#1D9BF0',
-        'tred': '#f91880'
+        'tred' : '#F4212E',
+        'tpink': '#f91880',
       },
       lineClamp: {
         10: '10',
       },
       zIndex: {
         1: '1',
-      }
+      },
     }
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
 
