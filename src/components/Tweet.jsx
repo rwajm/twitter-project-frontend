@@ -32,31 +32,16 @@ const Tweet = ({
     const [isOverflowing, setIsOverflowing] = useState(false);
     const [liked, setLiked] = useState(false);
 
-    // 타임라인에서 트윗 카드 클릭 구현
-    useEffect(() => {
-        function gotoTweet() {
-            // console.log('article clicked');
-            navigate(`/${userId}/tweets/${tweetId}`);
-        }
-
-        const regex = /\/[A-Za-z0-9]+\/[A-Za-z]+\/[0-9]+/i;
-        if (!regex.test(location.pathname)) {
-            console.log(location.pathname);
-            tweetRef.current.addEventListener('click', gotoTweet);
-        }
-    }, [location.pathname, userId, tweetId, navigate]);
-
     // 더보기 버튼 구현
     const checkOverflowing = () => {
         const tweet = textRef.current;
-
         setIsOverflowing(tweet.scrollHeight > tweet.clientHeight);
     };
 
     useEffect(() => {
         checkOverflowing();
     }, []);
-    
+
     // 좋아요 버튼 구현; 의존성 문제 추후 확인
     useEffect(() => {
         setLiked(likeData);
@@ -79,30 +64,49 @@ const Tweet = ({
             axios.delete(`tweets/${tweetId}/like`, likeInfo)
                 .then((res) => {
                     // 마음에 들어요 취소 성공 코드 200을 받으면 표시
-                    if (res.status === 200) {
-                        setLiked(false);
-                    }
-                    if (res.status === 404) {
-                        alert("없어요");
+                    switch (res.status) {
+                        case 204:
+                            setLiked(false); // 말고 리렌더
+                            break;
+                        case 404:
+                            console.log("마음에 들어요 기록 존재하지 않음");
+                            setLiked(false); // 말고 리렌더
+                            break;
+                        case 501:
+                            alert("잘못된 api 호출. uri가 잘못되었을 수 있습니다.");
+                            // 홈으로...?
+                            break;
+                        default:
+                            alert(res.status);
+                            break;
                     }
                 })
                 .catch((err) => {
-                    alert("좋아요 취소 요청 실패");
+                    alert(`좋아요 취소 요청 실패 ; ${err}`);
                 });
         } else {
             axios.post(`tweets/${tweetId}/like`, likeInfo)
                 .then((res) => {
                     console.log(res);
                     // 마음에 들어요 저장 성공 코드 200을 받으면 표시
-                    if (res.status === 200) {
-                        setLiked(true);
-                    }
-                    if (res.status === 404) {
-                        alert("없어요");
+                    switch (res.status) {
+                        case 200:
+                            setLiked(true); // 말고 리렌더
+                            break;
+                        case 409:
+                            console.log("중복된 마음에 들어요 요청");
+                            break;
+                        case 501:
+                            alert("잘못된 api 호출. uri가 잘못되었을 수 있습니다.");
+                            // 홈으로...?
+                            break;
+                        default:
+                            alert(res.status);
+                            break;
                     }
                 })
                 .catch((err) => {
-                    alert("좋아요 요청 실패");
+                    alert(`좋아요 요청 실패 ; ${err}`);
                 });
         }
     }

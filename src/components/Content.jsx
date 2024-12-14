@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 import Tweet from 'components/Tweet';
+import { useNavigate } from "react-router-dom";
 
 
 let eng = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis fermentum felis quis condimentum. Etiam fringilla in odio sed placerat.\r\nQuisque pretium blandit orci, sit amet pulvinar mi volutpat vel. Mauris vulputate faucibus volutpat.\r\nQuisque lobortis elit ac molestie imperdiet. Praesent euismod ipsum et odio mattis tincidunt. Nam eros erat, faucibus vitae aliquam eu, cursus eu lacus.\r\nVivamus eu nisl sem. Vivamus mattis aliquam lectus eget volutpat. Nullam facilisis vehicula metus vel volutpat. Nunc rhoncus eu libero id rhoncus.";
@@ -61,13 +62,15 @@ const Content = () => {
 
   const [tweetList, setTweetList] = useState([]);
 
+  const navigate = useNavigate();
+
   // 아직 무한스크롤 적용하지 않음
   // https://khdscor.tistory.com/101
-  
+
   useEffect(() => {
     axios.get(`http://localhost:8080/tweets/home`)
       .then(res => setTweetList(...res.data))
-      .catch(err => {setTweetList(dummyList); console.log(err);})
+      .catch(err => { setTweetList(dummyList); console.log(err); })
   }, []);
 
   return (
@@ -75,22 +78,26 @@ const Content = () => {
       {tweetList
         .map((tweet) => {
           return (
-            <Tweet
-              key={tweet.id}
-              tweetId={tweet.id}
-              userId={tweet.userId}
-              userName={tweet.userName}
-              userProfile={tweet.userProfile}
-              date={tweet.date}
-              text={tweet.text}
-              // images={tweet.images}
-              // mentions={tweet.mentions}
-              // retweet={tweet.retweet}
-              likes={tweet.likes}
-              // views={tweet.views}
-              // prevTweetId={tweet.prevTweetId}
-              likeData={tweet.likeData}
-            />
+            <div onClick={() => {
+              // 타임라인에서 트윗 카드 클릭 구현
+              navigate(`/${tweet.userId}/tweets/${tweet.id}`);
+            }}>
+              <Tweet
+                key={tweet.id}
+                tweetId={tweet.id}
+                userId={tweet.userId}
+                userName={tweet.userName}
+                userProfile={tweet.userProfile}
+                date={tweet.date}
+                text={tweet.text}
+                // images={tweet.images}
+                // mentions={tweet.mentions}
+                // retweet={tweet.retweet}
+                likes={tweet.likes}
+                // views={tweet.views}
+                // prevTweetId={tweet.prevTweetId}
+                likeData={tweet.likeData}
+              /></div>
           );
         })}
       <div className="h-[200px]"></div>
