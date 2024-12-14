@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Tweet from "components/Tweet";
@@ -18,6 +18,7 @@ const dummy =
 const TweetPage = () => {
     const [tweet, setTweet] = useState();
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const regex = /\/tweets\/(\d+)/;
@@ -31,13 +32,14 @@ const TweetPage = () => {
         <>
             <div className="flex flex-row gap-4 items-center w-full h-14 bg-white/85 backdrop-blur-md border-solid border-b-[1px] border-b-tlightgray z-50 px-4" draggable="false">
                 {/** 추후 컴포넌트로 분리해서 기능 구현; useNavigate */}
-                <button className="relative flex items-center justify-center -left-2 size-9">
+                <button className="relative flex items-center justify-center -left-2 size-9" onClick={() => {navigate(-1)}}>
                     <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5"> <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" />
                     </svg>
                 </button>
                 <span className="text-xl font-bold">트윗</span>
             </div>
             {tweet ? (
+                // 통으로 넘길까...?
                 <Tweet
                     tweetId={tweet.id}
                     userId={tweet.userId}
