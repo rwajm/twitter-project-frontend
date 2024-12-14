@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 //임시 데이터
 
@@ -24,7 +24,6 @@ const Tweet = ({
 }) => {
 
     const location = useLocation();
-    const navigate = useNavigate();
 
     const tweetRef = useRef(null);
     const textRef = useRef(null);
