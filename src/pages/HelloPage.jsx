@@ -38,7 +38,7 @@ function Hello() {
                                     </g>
                                 </svg>
                                 <div className="flex flex-wrap max-md:text-[48px] text-[56px] font-bold leading-snug">
-                                    <span className="text-balance">Twitout</span>&nbsp;<span className="text-balance">시작하기</span>
+                                    <span className="text-balance">Tweetout</span>&nbsp;<span className="text-balance">시작하기</span>
                                 </div>
                                 <div className="max-w-xs">
                                     <div className="w-full mb-5 text-2xl font-bold">
@@ -71,7 +71,7 @@ function Hello() {
                                 </div>
                                 <div className="max-w-xs">
                                     <div className="mb-5">
-                                        <span className="font-bold">이미 Twitout에 가입하셨나요?</span>
+                                        <span className="font-bold">이미 Tweetout에 가입하셨나요?</span>
                                     </div>
                                     <Link to="/login"
                                         data-testid="loginButton" className="flex">

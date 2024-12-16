@@ -7,7 +7,7 @@ function Home() {
     <>
       <div>
         <div className="fixed flex flex-row top-0 items-center justify-center w-full h-14 bg-white/85 backdrop-blur-md border-solid border-b-[1px] border-b-tlightgray z-50 select-none" aria-hidden="true" draggable="false">
-          <img alt="Twitout" src="/logo192.png" className="pointer-events-none select-none size-8" draggable="false" role="presentation" />
+          <img alt="Tweetout" src="/logo192.png" className="pointer-events-none select-none size-8" draggable="false" role="presentation" />
         </div>
         {/** 글쓰기 버튼 컴포넌트로 분리하여 기능 구현 */}
         <TabBar />

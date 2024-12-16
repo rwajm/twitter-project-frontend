@@ -23,7 +23,7 @@ const TweetPage = () => {
     useEffect(() => {
         const regex = /\/tweets\/(\d+)/;
         const tweetId = location.pathname.match(regex)[1];
-        axios.get(`http://localhost:8080/tweets/${tweetId}`)
+        axios.get(`tweets/${tweetId}`)
             .then(res => setTweet(res.data))
             .catch(err => { setTweet(dummy); console.log(err); })
     }, [location]);
@@ -31,7 +31,6 @@ const TweetPage = () => {
     return (
         <>
             <div className="flex flex-row gap-4 items-center w-full h-14 bg-white/85 backdrop-blur-md border-solid border-b-[1px] border-b-tlightgray z-50 px-4" draggable="false">
-                {/** 추후 컴포넌트로 분리해서 기능 구현; useNavigate */}
                 <button className="relative flex items-center justify-center -left-2 size-9" onClick={() => {navigate(-1)}}>
                     <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5"> <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" />
                     </svg>

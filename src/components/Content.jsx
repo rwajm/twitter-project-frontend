@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 import Tweet from 'components/Tweet';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 let eng = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis fermentum felis quis condimentum. Etiam fringilla in odio sed placerat.\r\nQuisque pretium blandit orci, sit amet pulvinar mi volutpat vel. Mauris vulputate faucibus volutpat.\r\nQuisque lobortis elit ac molestie imperdiet. Praesent euismod ipsum et odio mattis tincidunt. Nam eros erat, faucibus vitae aliquam eu, cursus eu lacus.\r\nVivamus eu nisl sem. Vivamus mattis aliquam lectus eget volutpat. Nullam facilisis vehicula metus vel volutpat. Nunc rhoncus eu libero id rhoncus.";
@@ -66,16 +66,21 @@ const Content = () => {
 
   // 아직 무한스크롤 적용하지 않음
   // https://khdscor.tistory.com/101
-
   useEffect(() => {
     axios.get(`http://localhost:8080/tweets/home`)
-      .then(res => setTweetList(...res.data))
-      .catch(err => { setTweetList(dummyList); console.log(err); })
+      .then(res => { 
+        setTweetList(...res.data);
+      })
+      .catch(err => { 
+        alert(err);
+        // setTweetList(dummyList);
+      })
   }, []);
 
   return (
     <div className="relative w-full">
-      {tweetList?.map((tweet) => {
+      {tweetList ?
+        tweetList.map((tweet) => {
           return (
             <div onClick={() => { navigate(`/${tweet.userId}/tweets/${tweet.id}`); }}>
               <Tweet
@@ -95,7 +100,26 @@ const Content = () => {
                 likeData={tweet.likeData}
               /></div>
           );
-        })}
+        })
+        :
+        <div>
+          <div className="flex flex-col px-8 my-8 gap-y-7">
+            <div className="flex flex-col gap-y-2">
+              <div className="text-3xl font-bold text-tblack">
+                <span>Tweetout에 오신 것을 환영합니다!</span>
+              </div>
+              <div className="text-base text-tdarkgray">
+                <span>전 세계에서 무슨 일이 일어나고 있는지 알아보기에 최적인 장소입니다. 지금 팔로우할 사람과 주제를 찾아보세요.</span>
+              </div>
+            </div>
+            <Link to={""/* 팔로우 추천 페이지*/} role="link" className="px-6 rounded-full size-fit bg-tblue">
+              <div className="flex items-center h-12 text-lg font-bold text-white text-nowrap">
+                <span>시작해봅시다!</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      }
       <div className="h-[200px]"></div>
     </div>
   );
