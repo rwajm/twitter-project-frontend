@@ -75,13 +75,9 @@ const Content = () => {
 
   return (
     <div className="relative w-full">
-      {tweetList
-        .map((tweet) => {
+      {tweetList?.map((tweet) => {
           return (
-            <div onClick={() => {
-              // 타임라인에서 트윗 카드 클릭 구현
-              navigate(`/${tweet.userId}/tweets/${tweet.id}`);
-            }}>
+            <div onClick={() => { navigate(`/${tweet.userId}/tweets/${tweet.id}`); }}>
               <Tweet
                 key={tweet.id}
                 tweetId={tweet.id}
