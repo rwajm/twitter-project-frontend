@@ -135,7 +135,7 @@ function Compose(props) {
             <div className="relative">
                 <form className="flex flex-col px-4" id="tweet-form" onSubmit={handleSubmit(onSubmit)}>
                     {props.mentionTo ? <span>{props.mentionTo}님에게 보내는 답글</span> : <></> /*변수명은 임시*/}
-                    <textarea id="text" placeholder="무슨 일이 일어나고 있나요?" onInput={handleTextareaResize} className="relative text-xl border-none outline-none resize-none text-wrap min-h-[3lh] max-h-full" {...textRegister} ref={(e) => { textRegister.ref(e); textareaRef.current = e; }} />
+                    <textarea id="text" placeholder="무슨 일이 일어나고 있나요?" onInput={handleTextareaResize} className="focus:outline-none relative text-xl border-none outline-none resize-none text-wrap min-h-[3lh] max-h-full" {...textRegister} ref={(e) => { textRegister.ref(e); textareaRef.current = e; }} />
                     <div className="flex flex-row overflow-scroll scrollbar-hide">
                         {
                             medias.map((item, idx) => (
