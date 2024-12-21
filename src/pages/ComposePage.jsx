@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { throttle } from "lodash";
 import axios from "axios";
@@ -11,8 +11,11 @@ const loggedUser = { id: 'a' };
 
 // 받을 props: mentionTo, prevTweet
 function Compose(props) {
+    
     const { register, handleSubmit, watch } = useForm();
     const { ...textRegister } = register("text", { maxLength: 280 });
+
+    const navigate = useNavigate();
 
     // 추후 동영상 첨부 가능하게
     const [medias, setMedias] = useState([]);
@@ -28,15 +31,21 @@ function Compose(props) {
 
     // 파일 크기 제한 필요
     const handleSelectFiles = (e) => {
-        const selectedFiles = Array.from(e.target.files);
+        const filesSelected = Array.from(e.target.files);
 
-        const filteredFiles = selectedFiles.filter((item) =>
-            item.type.slice(0, item.type.indexOf("/")) === ("image" || "video"));
-        if (selectedFiles.length !== filteredFiles.length)
+        const validTypeFiles = filesSelected.filter((item) =>
+            ["image", "video"].includes(item.type.slice(0, item.type.indexOf("/"))));
+        if (filesSelected.length !== validTypeFiles.length)
             alert("이미지 또는 동영상 파일만 첨부할 수 있습니다.");
-        if (filteredFiles.length === 0) return;
+        if (validTypeFiles.length === 0) return;
 
-        const newItems = filteredFiles.map((file) => {
+        const validSizeFiles = validTypeFiles.filter((item) =>
+            item.size <= 5 * 1024 * 1024);
+        if (validTypeFiles.length !== validSizeFiles.length)
+            alert("5MB 이하의 파일만 첨부할 수 있습니다.");
+        if (validSizeFiles.length === 0) return;
+
+        const newItems = validSizeFiles.map((file) => {
             return {
                 'file': file,
                 'url': URL.createObjectURL(file),
@@ -80,6 +89,8 @@ function Compose(props) {
     const text = watch({ id: "text" }).text;
     const textLength = text ? text.normalize('NFC').replace(/[0-\u07ff]|(.)/g, "$&$1").length : 0;
 
+    const isSubmitDisabled = !text && medias.length === 0 || textLength > 280;
+
     const onSubmit = (formData) => {
         formData = {
             ...formData,
@@ -93,16 +104,10 @@ function Compose(props) {
             if (textLength > 280)
                 throw new Error("텍스트 길이 제한 초과");
             formData.medias.forEach((item) => {
-                const fileType = item.name.toLowerCase().slice(item.name.lastIndexOf(".") + 1);
-                switch (fileType) {
-                    case "png":
-                    case "jpeg":
-                    case "jpg":
-                    case "gif":
-                    case "webp":
-                        break;
-                    default:
-                        throw new Error("잘못된 형식의 파일 포함");
+                const allowedTypes = ["png", "jpeg", "jpg", "gif", "webp"];
+                const fileType = item.name.toLowerCase().slice(item.name.lastIndexOf(".") + 1).toLowerCase();
+                if (!allowedTypes.includes(fileType)) {
+                    throw new Error("잘못된 형식의 파일 포함");
                 }
             })
         } catch (err) {
@@ -118,7 +123,7 @@ function Compose(props) {
                 } else {
                     alert(res.data.msg);
                 }
-                Navigate("/home");
+                navigate("/home");
             })
             .catch((err) => {
                 alert("전송 실패 : " + err);
@@ -130,12 +135,12 @@ function Compose(props) {
             <div className="flex flex-row items-center justify-between w-full h-14 bg-white/85 backdrop-blur-md border-solid border-b-[1px] border-b-tlightgray z-50 px-4">
                 <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5"> <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" />
                 </svg>
-                <button form="tweet-form" type="submit" aria-disabled="true" disabled={(!text && medias.length === 0) || textLength > 280 ? true : false} className="h-8 px-4 text-sm font-bold text-white rounded-full bg-tblue disabled:opacity-50" onClick={handleSubmit(onSubmit)}>게시하기</button>
+                <button form="tweet-form" type="submit" aria-disabled="true" disabled={isSubmitDisabled} className="h-8 px-4 text-sm font-bold text-white rounded-full bg-tblue disabled:opacity-50" onClick={handleSubmit(onSubmit)}>게시하기</button>
             </div>
             <div className="relative">
                 <form className="flex flex-col px-4" id="tweet-form" onSubmit={handleSubmit(onSubmit)}>
                     {props.mentionTo ? <span>{props.mentionTo}님에게 보내는 답글</span> : <></> /*변수명은 임시*/}
-                    <textarea id="text" placeholder="무슨 일이 일어나고 있나요?" onInput={handleTextareaResize} className="focus:outline-none relative text-xl border-none outline-none resize-none text-wrap min-h-[3lh] max-h-full" {...textRegister} ref={(e) => { textRegister.ref(e); textareaRef.current = e; }} />
+                    <textarea id="text" placeholder="무슨 일이 일어나고 있나요?" onInput={handleTextareaResize} className="focus:outline-none relative text-xl border-none outline-none resize-none text-wrap min-h-[3lh] max-h-full" aria-label="글 작성" {...textRegister} ref={(e) => { textRegister.ref(e); textareaRef.current = e; }} />
                     <div className="flex flex-row overflow-scroll scrollbar-hide">
                         {
                             medias.map((item, idx) => (
