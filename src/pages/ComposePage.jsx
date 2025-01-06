@@ -89,7 +89,7 @@ function Compose(props) {
     const text = watch({ id: "text" }).text;
     const textLength = text ? text.normalize('NFC').replace(/[0-\u07ff]|(.)/g, "$&$1").length : 0;
 
-    const isSubmitDisabled = !text && medias.length === 0 || textLength > 280;
+    const isSubmitDisabled = !text && (medias.length === 0 || textLength > 280);
 
     const onSubmit = (formData) => {
         formData = {
