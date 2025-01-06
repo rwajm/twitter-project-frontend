@@ -135,12 +135,12 @@ function Compose(props) {
             <div className="flex flex-row items-center justify-between w-full h-14 bg-white/85 backdrop-blur-md border-solid border-b-[1px] border-b-tlightgray z-50 px-4">
                 <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5"> <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" />
                 </svg>
-                <button form="tweet-form" type="submit" aria-disabled="true" disabled={isSubmitDisabled} className="h-8 px-4 text-sm font-bold text-white rounded-full bg-tblue disabled:opacity-50" onClick={handleSubmit(onSubmit)}>게시하기</button>
+                <button form="tweet-form" type="submit" aria-disabled="true" disabled={isSubmitDisabled} className="h-8 px-4 text-sm font-bold text-white rounded-full text-nowrap bg-tblue disabled:opacity-50" onClick={handleSubmit(onSubmit)}>게시하기</button>
             </div>
             <div className="relative">
                 <form className="flex flex-col px-4" id="tweet-form" onSubmit={handleSubmit(onSubmit)}>
                     {props.mentionTo ? <span>{props.mentionTo}님에게 보내는 답글</span> : <></> /*변수명은 임시*/}
-                    <textarea id="text" placeholder="무슨 일이 일어나고 있나요?" onInput={handleTextareaResize} className="focus:outline-none relative text-xl border-none outline-none resize-none text-wrap min-h-[3lh] max-h-full" aria-label="글 작성" {...textRegister} ref={(e) => { textRegister.ref(e); textareaRef.current = e; }} />
+                    <textarea id="text" placeholder="무슨 일이 일어나고 있나요?" onInput={handleTextareaResize} className="focus:outline-none relative text-xl max-[360px]:text-sm border-none outline-none resize-none text-wrap min-h-[3lh] max-h-full py-4" aria-label="글 작성" {...textRegister} ref={(e) => { textRegister.ref(e); textareaRef.current = e; }} />
                     <div className="flex flex-row overflow-scroll scrollbar-hide">
                         {
                             medias.map((item, idx) => (
