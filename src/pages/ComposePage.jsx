@@ -116,7 +116,7 @@ function Compose(props) {
         }
 
         axios
-            .post(`tweets`, formData)
+            .post(`http://localhost:8080/tweets`, formData)
             .then((res) => {
                 if (res.data) {
                     alert(res.data.msg);
